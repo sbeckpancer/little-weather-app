@@ -21,15 +21,18 @@ li {
   margin: 0;
   padding: 0;
   color: rgb(112, 117, 122);
-  color-scheme: light;
   font-size: 12px;
   font-weight: 400;
   line-height: 16px;
-  width: 88.875px;
 }
 
 li::first-letter {
   text-transform: capitalize;
+}
+
+small {
+  display: block;
+  text-align: center;
 }
 
 .weather-app-wrapper {
