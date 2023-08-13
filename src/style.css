@@ -46,9 +46,11 @@ small {
 
 .title {
   padding-top: 20px;
-  font-size: 28px;
+  font-size: 36px;
   color: white;
   text-align: center;
+  font-family: "Chewy", serif;
+  text-shadow: 4px 4px 4px #aaa;
 }
 .weather-app {
   padding: 40px;

@@ -77,7 +77,7 @@ function getForecast(coordinates) {
   console.log(coordinates);
 
   let key = "7403et83fb4399900394coaf2dac3cbb";
-  let apiUrl = `https://api.shecodes.io/weather/v1/forecast?lon=${coordinates.longitude}&lat=${coordinates.latitude}&key=${key}&units=metric`;
+  let apiUrl = `https://api.shecodes.io/weather/v1/forecast?lon=${coordinates.longitude}&lat=${coordinates.latitude}&key=${key}&units=imperial`;
 
   console.log(apiUrl);
   axios.get(apiUrl).then(displayForecast);
@@ -92,9 +92,9 @@ function displayTemperature(response) {
   let dateElement = document.querySelector("#date");
   let iconElement = document.querySelector("#icon");
 
-  celsiusTemperature = response.data.temperature.current;
+  fahrenheitTemperature = response.data.temperature.current;
 
-  temperatureElement.innerHTML = Math.round(celsiusTemperature);
+  temperatureElement.innerHTML = Math.round(fahrenheitTemperature);
   cityElement.innerHTML = response.data.city;
   descriptionElement.innerHTML = response.data.condition.description;
   humidityElement.innerHTML = response.data.temperature.humidity;
@@ -111,7 +111,7 @@ function displayTemperature(response) {
 
 function search(city) {
   let key = "7403et83fb4399900394coaf2dac3cbb";
-  let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${key}&units=metric`;
+  let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${key}&units=imperial`;
 
   axios.get(apiUrl).then(displayTemperature);
 }
@@ -122,30 +122,30 @@ function handleSubmit(event) {
   search(cityInputElement.value);
 }
 
-function displayFahrenheitTemperature(event) {
-  event.preventDefault();
-  let temperatureElement = document.querySelector("#temperature");
-  // remove the active class from the celsius link
-  celsiusLink.classList.remove("active");
-  // add the active class to the fahrenheit link
-  fahrenheitLink.classList.add("active");
-  let fahrenheitTemperature = (celsiusTemperature * 9) / 5 + 32;
-
-  temperatureElement.innerHTML = Math.round(fahrenheitTemperature);
-}
-
 function displayCelsiusTemperature(event) {
   event.preventDefault();
-
   let temperatureElement = document.querySelector("#temperature");
+  // remove the active class from the fahrenheitlink
+  fahrenheitLink.classList.remove("active");
   // add the active class to the celsius link
   celsiusLink.classList.add("active");
-  // remove the active class from the fahrenheit link
-  fahrenheitLink.classList.remove("active");
+  let celsiusTemperature = ((fahrenheitTemperature - 32) * 5) / 9;
+
   temperatureElement.innerHTML = Math.round(celsiusTemperature);
 }
 
-let celsiusTemperature = null;
+function displayFahrenheitTemperature(event) {
+  event.preventDefault();
+
+  let temperatureElement = document.querySelector("#temperature");
+  // add the active class to the fahrenheitlink
+  fahrenheitLink.classList.add("active");
+  // remove the active class from the fahrenheit link
+  celsiusLink.classList.remove("active");
+  temperatureElement.innerHTML = Math.round(fahrenheitTemperature);
+}
+
+let fahrenheitTemperature = null;
 
 let form = document.querySelector("#search-form");
 form.addEventListener("submit", handleSubmit);
