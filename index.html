@@ -19,8 +19,15 @@
   </head>
 
   <body>
+
+    
+
     <div class="container">
       <div class="weather-app-wrapper">
+        <div class="title">
+      Sara's Little Knockoff Weather App
+         </div>
+
         <div class="weather-app">
           <form id="search-form" class="mb-3">
             <div class="row">
@@ -37,15 +44,18 @@
         </div>
           </form>
           </div>
-          <div class="overview">
+
+          <div class="row justify-content-evenly overview">
+            <div class="col-12">
             <h1 id="city"></h1>
             <ul>
               <li>Last updated: <span id="date"></span></li>
               <li id="description"></li>
             </ul>
           </div>
+          </div>
 
-          <div class="row">
+          <div class="row justify-content-evenly">
             <div class="col-6">
               <div class="d-flex weather-temperature">
                 <img id="icon" src="" alt="" />
@@ -54,12 +64,8 @@
                   ><span class="units"> <a style="text-decoration:none" href="#" id="celsius-link" class ="active">°C</a> | <a style="text-decoration:none" href="#" id="fahrenheit-link"> °F </a></span>
                 </div>
               </div>
-              <div class = "weather-forecast" id="forecast"> 
-               
-              </div>
+             </div>
          
-            </div>
-
             <div class="col-6">
               <ul>
                 <li>Humidity: <span id="humidity"> </span>%</li>
@@ -68,7 +74,10 @@
               </ul>
             </div>
           </div>
+
+           <div class = "weather-forecast" id="forecast"> 
         </div>
+        <br>
         <small>
           <a
             href="https://github.com/sbeckpancer/little-weather-app"

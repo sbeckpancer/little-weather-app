@@ -23,33 +23,64 @@ function formatDate(timestamp) {
   return `${day} ${hours}:${minutes}`;
 }
 
-function displayForecast() {
+//we need to fix how the day is displayed in the forecast. Right now
+//it is 161100932. We need it to be a day of the week.
+
+function formatDay(timestamp) {
+  // the parameter passed to the function will be a timestamp
+  let date = new Date(timestamp * 1000);
+
+  let day = date.getDay();
+  let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+  return days[day];
+}
+
+function displayForecast(response) {
+  let forecast = response.data.daily; //creates an array called Forecast with the weather data for each of 7 days
+
   let forecastElement = document.querySelector("#forecast");
 
-  let forecastHTML = `<div class="row">`; //opening the row
-  let days = ["Thu", "Fri", "Sat", "Sun"];
+  let forecastHTML = `<div class="row justify-content-evenly">`; //opening the row
 
-  days.forEach(function (day) {
-    forecastHTML =
-      forecastHTML +
-      `
-     <div class ="col-3">
-      <div class="weather-forecast-date">${day}</div>
-      <img src="http://shecodes-assets.s3.amazonaws.com/api/weather/icons/broken-clouds-night.png" width="36"></img>
+  forecast.forEach(function (forecastDay, index) {
+    //forecastDay is the parameter for the function
+    //below we can get pieces out of the object forecastDay without [0], just forecastDay.condition.icon, for example
+    if (index > 0 && index < 7) {
+      forecastHTML =
+        forecastHTML +
+        `
+     <div class ="col-2">
+      <div class="weather-forecast-date">${formatDay(forecastDay.time)}</div> 
+      
+      <img src="http://shecodes-assets.s3.amazonaws.com/api/weather/icons/${
+        forecastDay.condition.icon
+      }.png" width="48"></img>
     <div class="weather-forecast-temperatures">
       <span class="weather-forecast-temperature-max">
-        18°
+        ${Math.round(forecastDay.temperature.maximum)}°
       </span>
       <span class="weather-forecast-temperature-min">
-        12°
+         ${Math.round(forecastDay.temperature.minimum)}°
       </span>
     </div>
     </div>
   `;
+    }
   });
 
   forecastHTML = forecastHTML + `</div>`; //closing the row
   forecastElement.innerHTML = forecastHTML; //putting this inside the forecast element that we selected before
+}
+
+function getForecast(coordinates) {
+  console.log(coordinates);
+
+  let key = "7403et83fb4399900394coaf2dac3cbb";
+  let apiUrl = `https://api.shecodes.io/weather/v1/forecast?lon=${coordinates.longitude}&lat=${coordinates.latitude}&key=${key}&units=metric`;
+
+  console.log(apiUrl);
+  axios.get(apiUrl).then(displayForecast);
 }
 
 function displayTemperature(response) {
@@ -74,6 +105,8 @@ function displayTemperature(response) {
     `http://shecodes-assets.s3.amazonaws.com/api/weather/icons/${response.data.condition.icon}.png`
   );
   iconElement.setAttribute("alt", `${response.data.condition.description}`);
+
+  getForecast(response.data.coordinates);
 }
 
 function search(city) {
@@ -82,6 +115,7 @@ function search(city) {
 
   axios.get(apiUrl).then(displayTemperature);
 }
+
 function handleSubmit(event) {
   event.preventDefault();
   let cityInputElement = document.querySelector("#city-input");
@@ -122,5 +156,4 @@ fahrenheitLink.addEventListener("click", displayFahrenheitTemperature);
 let celsiusLink = document.querySelector("#celsius-link");
 celsiusLink.addEventListener("click", displayCelsiusTemperature);
 
-search("San Diego");
-displayForecast();
+search("Paris");
